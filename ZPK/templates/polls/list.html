@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello</title>
+</head>
+<body>
+
+
+{% if allworkers %}
+  <ul>  <h2>Список сотрудников</h2></ul>
+    {% for worker in allworkers %}
+
+        <div class="w3-container">
+  <ul class="w3-ul w3-card-4  w3-white w3-round w3-margin">
+    <li class="w3-bar">
+      <img src="img_avatar2.png" class="w3-bar-item w3-circle w3-hide-small" style="width:85px">
+      <div class="w3-bar-item">
+        <span class="w3-large">{{ worker.LastName }} {{ worker.FirstName }}</span><br>
+        <span>Дата рождения: {{ worker.Age }}</span><br>
+        <span>Должность: </span><br>
+        <span>Оклад: </span>
+      </div>
+    </li>
+
+
+  </ul>
+</div>
+
+
+    {% endfor %}
+
+{% else %}
+    <p>No more workers available.</p>
+{% endif %}
+
+
+
+
+{% if worker %}
+<a>{{ worker.LastName }}</a>
+{% endif %}
+
+
+
+
+
+
+</body>
+</html>

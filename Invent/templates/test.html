@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <title>Инвентаризация</title>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top ">
+
+
+ <div class="w3-bar w3-theme-d2  w3-large ">
+
+ <button onclick="document.getElementById('id01').style.display='block'" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white "><i class="fa fa-plus"> Добавить</i></button>
+  <a href="" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white " title="Поиск"><i class="fa fa-search"> Поиск</i></a>
+  <a href="" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white " title=""><i class="fa fa-ban"> Резерв</i></a>
+    <input class="w3-border w3-bar-item w3-padding w3-display-middle w3-input w3-hide-small w3-light-gray" type="text" placeholder="Поиск..." id="myInput">
+
+
+     <!-- Добавление элемента в список -->
+<div id="id01" class="w3-modal ">
+    <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+
+      <form class="w3-container w3-light-grey" action="/invent/additem" method="post">
+           {% csrf_token %}
+     {{ form }}
+        <div class="w3-section">
+            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Введите наименование" name="Name" required>
+            <input class="w3-input w3-border" type="number" placeholder="Аккаунт" name="Account" >
+            <input class="w3-input w3-border" type="number" placeholder="Срок эксплуатации (часов)" name="Lifetime" >
+            <input class="w3-input w3-border" type="date" placeholder="Выбирите дату" name="Comissioning" >
+            <input class="w3-input w3-border" type="text" placeholder="Ответственное лицо" name="MOL" >
+            <input class="w3-input w3-border" type="text" placeholder="Инвентарный номер" name="InvNum" >
+            <input class="w3-input w3-border" type="text" placeholder="Заводской номер" name="FactoryNum" >
+            <input class="w3-input w3-border" type="text" placeholder="Расположение" name="Location" >
+            <input class="w3-button w3-block w3-blue-gray w3-section w3-padding" type="submit">
+            <button onclick="document.getElementById('id01').style.display='none'" type="button" class="w3-button w3-blue-gray w3-block w3-blue-gray w3-section w3-padding">Отмена</button>
+        </div>
+
+      </form>
+
+      <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+<!-- Конец добавления -->
+
+
+
+
+
+
+<div class="w3-container ">
+  <h2>Табличка</h2>
+  <table id="myTable" class="w3-table-all w3-centered w3-hoverable ">
+
+    <tr class="w3-blue-gray">
+
+      <th>Наименование</th>
+      <th>Аккаунт?</th>
+      <th>Срок эксплуатации (часов)</th>
+      <th>Дата закупки</th>
+         <th>Ответственное лицо</th>
+         <th>Инвентарный номер</th>
+         <th>Заводской номер</th>
+         <th>Расположение</th>
+        <th>Редактировать</th>
+        <th>Удалить</th>
+    </tr>
+ <tr>
+     {% for item in all %}
+
+      <td>{{ item.Name }}</td>
+      <td>{{ item.Account|default_if_none:"" }}</td>
+      <td>{{ item.Lifetime|default_if_none:"" }}</td>
+      <td>{{ item.Comissioning|default_if_none:"" }}</td>
+      <td>{{ item.MOL|default_if_none:"" }}</td>
+      <td>{{ item.InvNum|default_if_none:"" }}</td>
+      <td>{{ item.FactoryNum|default_if_none:"" }}</td>
+      <td>{{ item.Location|default_if_none:"" }}</td>
+
+<div id="{{ item.id }}" class="w3-modal ">
+    <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+
+      <form class="w3-container w3-light-grey" action="/invent/edit_items" method="post">
+           {% csrf_token %}
+     {{ form }}
+        <div class="w3-section">
+            <input class="w3-input w3-border w3-margin-bottom" type="hidden" placeholder="Введите наименование" name="Id"  value="{{ item.id }}">
+            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Введите наименование" name="Name" required value="{{ item.Name }}">
+            <input class="w3-input w3-border" type="number" placeholder="Аккаунт" name="Account"  value="{{ item.Account }}" >
+            <input class="w3-input w3-border" type="number" placeholder="Срок эксплуатации (часов)" name="Lifetime" >
+            <input class="w3-input w3-border" type="date" placeholder="Выбирите дату" name="Comissioning" >
+            <input class="w3-input w3-border" type="text" placeholder="Ответственное лицо" name="MOL" >
+            <input class="w3-input w3-border" type="text" placeholder="Инвентарный номер" name="InvNum" >
+            <input class="w3-input w3-border" type="text" placeholder="Заводской номер" name="FactoryNum" >
+            <input class="w3-input w3-border" type="text" placeholder="Расположение" name="Location" >
+            <input class="w3-button w3-block w3-blue-gray w3-section w3-padding" type="submit">
+            <button onclick="document.getElementById('{{ item.id }}').style.display='none'" type="button" class="w3-button w3-blue-gray w3-block w3-blue-gray w3-section w3-padding">Отмена</button>
+        </div>
+
+      </form>
+
+      <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+      </div>
+    </div>
+  </div>
+
+
+         <td> <button onclick="document.getElementById('{{ item.id }}').style.display='block'" class="w3-hover-blue-grey">Редактировать</button></td>
+
+
+
+
+         <!-- Удаление записей в таблице -->
+      <td> <form action="/invent/remove_items" method="post" onsubmit="window.mytest()">
+		           {% csrf_token %}
+				<input type="hidden" name="item_id" value="{{item.id}}" />
+			       <input type="submit" value="Удалить">
+			</form>
+
+
+      <script type="text/javascript">window.mytest = function() { var isValid = confirm('Are you sure ?');if (!isValid) { event.preventDefault();}}</script>
+
+      </td>
+
+
+
+    </tr>
+
+      {% endfor %}
+
+  </table>
+</div>
+
+
+
+
+
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+
+
+
+
+
+</body>
+</html>
+

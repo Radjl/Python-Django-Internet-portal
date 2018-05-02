@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Отдел логистики - Хронология погрузки судов</title>
+
+
+
+    <!-- Custom styles for this template -->
+    {% load static %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link href="{%  static 'css/blog-home.css' %}" rel="stylesheet">
+      <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  </head>
+
+  <body>
+
+
+
+  <!-- Alerts !! -->
+  {% if messages %}
+       {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+  <div class="alert alert-success alert-dismissible fade show text-center"  role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <strong>{{ message }}</strong>
+</div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+   <div class="alert alert-danger alert-dismissible fade show text-center"  role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <strong>{{ message }}</strong>
+</div>
+           {% endif %}
+       {% endfor %}
+  {% endif %}
+
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="/menu">Вернуться в меню</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+
+          <!-- Скрыто для удобства-->
+              {% if show %}
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Резерв
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Резерв</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Резерв</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Резерв</a>
+            </li>
+              {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+      <div class="row">
+
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+          <h1 class="my-4 text-center">Хронология погрузки судов
+
+          </h1>
+
+            <!-- Blog Post -->
+            {% for ship in allships %}
+          <div class="card mb-4">
+          {% if not ship.Photo %}
+            <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+              {% else %}
+            <img class="card-img-top" src="{{ ship.Photo.url }}" height="400" alt="Card image cap">
+              {% endif %}
+            <div class="card-body">
+              <h2 class="card-title">{{ ship.Name }} </h2>
+              <p class="card-text"><i>Направление судна: </i>{{ ship.Info }}</p>
+              <a href="{% url 'detail' id=ship.id %}" class="btn btn-primary">Подробнее &rarr;</a>
+            </div>
+            <div class="card-footer text-muted">
+              Добавлено: {{ ship.Pubdate }}
+              <a></a>
+            </div>
+          </div>
+{% endfor %}
+
+
+
+<!--- Пагинация -->
+<div class="pagination justify-content-center mb-4">
+    <span class="step-links">
+        {% if allships.has_previous %}
+            <a href="?page=1">&laquo;Первая</a>
+            <a href="?page={{ allships.previous_page_number }}">Предыдущая</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ allships.number }} из {{ allships.paginator.num_pages }}.
+        </span>
+
+        {% if allships.has_next %}
+            <a href="?page={{ allships.next_page_number }}">Следующая</a>
+            <a href="?page={{ allships.paginator.num_pages }}">Последняя &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+
+
+
+
+
+        </div>
+
+        <!-- Виджеты справа -->
+        <div class="col-md-4">
+
+          <!-- Search Widget -->
+        <form method="get" action="">
+          <div class="card my-4">
+            <h5 class="card-header">Поиск</h5>
+            <div class="card-body">
+              <div class="input-group">
+                <input type="text" class="form-control" name="q" placeholder="Введи название..." value="{{ request.GET.q }}">
+                <span class="input-group-btn">
+                  <button class="btn btn-secondary" type="submit">Go!</button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </form>
+
+          <!-- Categories Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Меню</h5>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-6">
+                  <ul class="list-unstyled mb-0">
+                    <li>
+                        <!--<button type="button" data-toggle="modal" data-target="#ShipAddModal" class="btn btn-primary center-block">Добавить</button>-->
+                        <a href="{% url 'shipadd2' %}" role="button"  class="btn btn-primary center-block">Добавить</a>
+                         <p></p>
+                    </li>
+
+                  <!--Скрыто-->
+                      {% if show %}
+                    <li>
+                      <button data-toggle="modal" data-target="#squarespaceModal" class="btn btn-primary center-block">Резерв</button>
+                    </li>
+
+                  </ul>
+                </div>
+                <div class="col-lg-6">
+                  <ul class="list-unstyled mb-0">
+                    <li>
+                      <button data-toggle="modal" data-target="#squarespaceModal" class="btn btn-primary center-block">Резерв</button>
+                        <p></p>
+                    </li>
+                    <li>
+                      <button data-toggle="modal" data-target="#squarespaceModal" class="btn btn-primary center-block">Резерв</button>
+                    </li>
+                      {% endif %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+            {% if widjet %}
+          <!-- Side Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Виджет</h5>
+            <div class="card-body">
+              Резерв
+            </div>
+          </div>
+            {% endif %}
+        </div>
+
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; A.Shell 2018</p>
+      </div>
+      <!-- /.container -->
+
+    </footer>
+
+
+
+<!-- Bootstrap core JavaScript -->
+   <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+    <script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+</script>
+
+
+  <!-- line modal -->
+<div class="modal fade" id="ShipAddModal">
+   <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title text-center">Добавление записи</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+
+          <!-- content goes here -->
+			<form action="{% url 'ships_add'%}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                {{ form }}
+                </table>
+              <div class="form-group">
+                <label for="ShipName">Название судна</label>
+                <input type="text" class="form-control" id="ShipName" placeholder="Введите название судна" name="Name" required>
+              </div>
+                 <div class="form-group">
+                <label for="ShipFormal">Краткая информация</label>
+                 <input type="text" class="form-control" id="ShipFormal" placeholder="Краткая информация" name="Info">
+              </div>
+              <div class="form-group">
+                <label for="ShipText">Описание</label>
+                 <textarea class="form-control" rows="5" id="ShipText" name="Content"></textarea>
+              </div>
+                <div class="form-group">
+                <label for="ShipTextEng">Описание(Англ)</label>
+                 <textarea class="form-control" rows="5" id="ShipTextEng" name="ContentEng"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="ShipPhoto"></label>
+                <input type="file" id="ShipPhoto" name="Photo" >
+              </div>
+                <button type="submit" class="btn btn-success">Создать</button>
+                <button type="button" class="btn btn-danger float-right" data-dismiss="modal">Закрыть</button>
+            </form>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+  </body>
+
+</html>
