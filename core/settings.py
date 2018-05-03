@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'untitled.urls'
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
@@ -77,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'untitled.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 SUMMERNOTE_CONFIG = {
 'disable_upload': True
@@ -142,10 +142,10 @@ MEDIA_URL = '/media/'
 
 #AddComment
 STATICFILES_DIRS = (
-      'C:/Users/sheludko/Desktop/Питон/untitled/ZPK/static/',
-       'C:/Users/sheludko/Desktop/Питон/untitled/Invent/static/',
-        'C:/Users/sheludko/Desktop/Питон/untitled/loginsys/static/',
-         'C:/Users/sheludko/Desktop/Питон/untitled/logistic/static/',
+      'C:/Users/sheludko/Desktop/Питон/core/ZPK/static/',
+       'C:/Users/sheludko/Desktop/Питон/core/Invent/static/',
+        'C:/Users/sheludko/Desktop/Питон/core/loginsys/static/',
+         'C:/Users/sheludko/Desktop/Питон/core/logistic/static/',
 )
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
